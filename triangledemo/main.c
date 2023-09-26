@@ -116,15 +116,23 @@ int main()
 	
 		//Set up rotation matrix lookup table
 	
-	for(i=0; i<6284; i++){							//Major speedups can be achieved here, a sin wave's second half is the first half inverted in the y axis, and the second quarter is the mirror image in the x axis, etc.
+
+	
+	FntPrint("populating transformation matrix");
+	display();
+	for(i=0; i<6284; i++){
+		float sinx;
+		int cospoint;						//Major speedups can be achieved here, a sin wave's second half is the first half inverted in the y axis, and the second quarter is the mirror image in the x axis, etc.
 		mradangle=(float)i/1000;
-		sprintf(textMessage, "%d", i);
-		FntPrint(textMessage);
-		lutrotMatrix[i][0][0] = cos(mradangle);
-		lutrotMatrix[i][0][1] = -sin(mradangle);
-		lutrotMatrix[i][1][0] = sin(mradangle);
-		lutrotMatrix[i][1][1] = cos(mradangle);
-		display();
+		sinx=(float)sin(mradangle);
+		cospoint=(i+4713)%6284;
+		//sprintf(textMessage, "Populating transformation matrix for rotation.  %d", i);
+		//FntPrint(textMessage);
+		lutrotMatrix[cospoint][0][0] = sinx;
+		lutrotMatrix[i][0][1] = -sinx;
+		lutrotMatrix[i][1][0] = sinx;
+		lutrotMatrix[cospoint][1][1] = sinx;
+		//display();
 	}
 	
 
